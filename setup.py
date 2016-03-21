@@ -18,4 +18,4 @@ setup(
     url='https://github.com/jasonwee/common-util-py',
     license=license,
     packages=find_packages(exclude=('tests', 'docs'))
-_
+)
