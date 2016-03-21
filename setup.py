@@ -12,7 +12,7 @@ setup(
     name='sample',
     version='0.0.1',
     description='Sample package for Python-Guide.org',
-    long_descriptoin=readme,
+    long_description=readme,
     author='Jason Wee',
     author_email='peichieh@gmail.com',
     url='https://github.com/jasonwee/common-util-py',
