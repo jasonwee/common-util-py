@@ -17,5 +17,6 @@ setup(
     author_email='peichieh@gmail.com',
     url='https://github.com/jasonwee/common-util-py',
     license=license,
-    packages=find_packages(exclude=('tests', 'docs'))
+    packages=find_packages(exclude=('tests', 'docs')),
+    test_suite = 'nose.collector'
 )
