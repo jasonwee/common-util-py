@@ -3,6 +3,8 @@
 from multiprocessing import Pool, Process, Queue, Pipe, Lock, Value, Array, Manager, TimeoutError
 import time
 import os
+import logging
+import multiprocessing
 
 def f(x):
     return x * x;
@@ -126,3 +128,8 @@ if __name__ == '__main__':
         print res.get(timeout=1)
     except TimeoutError:
         print "We lacked patience and got a multiprocessing.TimeoutError"
+
+    logger = multiprocessing.log_to_stderr()
+    logger.setLevel(logging.INFO)
+    logger.warning('doomed')
+    m = multiprocessing.Manager()
