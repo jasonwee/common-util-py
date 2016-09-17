@@ -4,3 +4,6 @@ python:
  - "3.5"
 
 script: python -c "print('implement me')"
+
+notifications:
+  slack: just6fun:Eh0j5aOJi6d7bgPzRuZNd7JO
