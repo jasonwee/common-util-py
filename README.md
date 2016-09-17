@@ -9,3 +9,4 @@ $ python setup.py nosetests
 ```
 
 read more [here](https://nose.readthedocs.io/en/latest/setuptools_integration.html)
+
