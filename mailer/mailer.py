@@ -1,3 +1,3 @@
 
 def mail():
-    print "sending email through smtp"
+    print("sending email through smtp")
