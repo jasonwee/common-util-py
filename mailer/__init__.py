@@ -1,2 +1,2 @@
-from gmail import gmail
-from mailer import mail
+from .gmail import gmail
+from .mailer import mail
