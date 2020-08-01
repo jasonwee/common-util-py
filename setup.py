@@ -9,9 +9,9 @@ with open('LICENSE') as f:
     license = f.read()
 
 setup(
-    name='sample',
+    name='common-util-py',
     version='0.0.1',
-    description='Sample package for Python-Guide.org',
+    description='common python utility modules',
     long_description=readme,
     author='Jason Wee',
     author_email='peichieh@gmail.com',
