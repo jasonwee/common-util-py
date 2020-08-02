@@ -9,10 +9,11 @@ with open('LICENSE') as f:
     license = f.read()
 
 setup(
-    name='common-util-py',
+    name='common_util_py',
     version='0.0.1',
     description='common python utility modules',
-    long_description=readme,
+    #long_description=readme,
+    long_description='common python utility modules',
     author='Jason Wee',
     author_email='peichieh@gmail.com',
     url='https://github.com/jasonwee/common-util-py',
