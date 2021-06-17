@@ -19,5 +19,10 @@ setup(
     url='https://github.com/jasonwee/common-util-py',
     license=license,
     packages=find_packages(exclude=('tests', 'docs')),
-    test_suite = 'nose.collector'
+    test_suite = 'nose.collector',
+    classifiers=[
+        'Operating System :: POSIX :: Linux',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+        'Programming Language :: Python :: 3',
+    ],
 )
