@@ -5,6 +5,8 @@ common utilies in python
 how to install
 ===========
 ```sh
+virtualenv --python=/usr/bin/python3 py39_env
+or
 python3.8 -m venv env_py38
 source env_py38/bin/activate
 pip install .
