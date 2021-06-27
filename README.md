@@ -31,7 +31,7 @@ read more [here](https://nose.readthedocs.io/en/latest/setuptools_integration.ht
 
 https://www.codingforentrepreneurs.com/blog/pipenv-virtual-environments-for-python/
 https://packaging.python.org/
-
+https://betterscientificsoftware.github.io/python-for-hpc/tutorials/python-pypi-packaging/
 
 how to upload to pypi
 ===========

@@ -10,7 +10,7 @@ with open('LICENSE') as f:
 
 setup(
     name='common_util_py',
-    version='0.0.3',
+    version='0.0.4',
     description='common python utility modules',
     #long_description=readme,
     long_description='common python utility modules',
@@ -19,6 +19,9 @@ setup(
     url='https://github.com/jasonwee/common-util-py',
     license=license,
     packages=find_packages(exclude=('tests', 'docs')),
+    install_requires=[
+        'pymysql',
+    ],
     test_suite = 'nose.collector',
     classifiers=[
         'Operating System :: POSIX :: Linux',
