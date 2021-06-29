@@ -1,4 +1,6 @@
 import os
+import mimetypes
+import smtplib
 
 from email import encoders
 from email.mime.audio import MIMEAudio
