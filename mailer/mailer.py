@@ -1,3 +1,5 @@
+import os
+
 from email import encoders
 from email.mime.audio import MIMEAudio
 from email.mime.base import MIMEBase
@@ -5,7 +7,6 @@ from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-# ./leadboxer/clients/trendmicro/ftp-report/bin/events_report.py
 def send_html(recipients, subject, message, sender="", cc=[], bcc=[], files=[]):
     print("sending email through smtp")
     server = 'localhost'
