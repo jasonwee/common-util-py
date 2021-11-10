@@ -69,7 +69,7 @@ def send_html(recipients, subject, message, sender="", cc=[], bcc=[], files=[]):
         mail_session.quit()
 
 
-def send_text(recipients, subject, message, sender):
+def send_text(recipients, subject, message, sender, server='localhost'):
     msg = MIMEText(message)
     msg['Subject'] = subject
     msg['From'] = sender
