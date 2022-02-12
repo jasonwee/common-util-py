@@ -34,6 +34,10 @@ def insert_statement(mysql_con: MySQLdb, sql: str) -> None:
     cur = mysql_con.cursor()
     cur.execute(sql)
 
+def insert_rows(mysql_con: MySQLdb, table_name: str, rows: List[Dict]) -> None:
+    for row in rows:
+        insert(mysql_con, table_name, row)
+
 def select_statement(mysql_con: MySQLdb, sql: str) -> None:
     cur = mysql_con.cursor(MySQLdb.cursors.DictCursor)
     cur.execute(sql)
