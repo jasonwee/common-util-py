@@ -5,6 +5,8 @@ common utilities in python
 
 ```sh
 virtualenv --python=/usr/bin/python3 py39_env
+source env_py39/bin/activate
+pip install .
 or
 python3.8 -m venv env_py38
 source env_py38/bin/activate
@@ -48,6 +50,8 @@ twine upload --config-file ~/.pypirc -r testpypi dist/common_util_py-0.0.1.tar.g
 ## test install
 ```sh
 pip install --index-url https://test.pypi.org/simple/ common-util-py
+or local install for quick test
+pip install dist/common_util_py-<version>.tar.gz
 ```
 
 # command to upload to the pypi repository
