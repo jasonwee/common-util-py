@@ -4,13 +4,13 @@ common utilities in python
 ## how to install
 
 ```sh
-virtualenv --python=/usr/bin/python3 py39_env
-source env_py39/bin/activate
-pip install .
-or
-python3.8 -m venv env_py38
-source env_py38/bin/activate
-pip install .
+$ virtualenv --python=/usr/bin/python3 py39_env
+$ source env_py39/bin/activate
+$ pip install .
+$ # or
+$ python3.8 -m venv env_py38
+$ source env_py38/bin/activate
+$ pip install .
 ```
 
 ## how to build
@@ -34,28 +34,28 @@ https://betterscientificsoftware.github.io/python-for-hpc/tutorials/python-pypi-
 
 ## how to upload to pypi
 ```sh
-python setup.py sdist
-pip install twine
+$ python setup.py sdist
+$ pip install twine
 ```
 
 ## commands to upload to the pypi test repository
 ```sh
-twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+$ twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 ```
 or
 ```sh
-twine upload --config-file ~/.pypirc -r testpypi dist/common_util_py-0.0.1.tar.gz
+$ twine upload --config-file ~/.pypirc -r testpypi dist/common_util_py-0.0.1.tar.gz
 ```
 
 ## test install
 ```sh
-pip install --index-url https://test.pypi.org/simple/ common-util-py
-or local install for quick test
-pip install dist/common_util_py-<version>.tar.gz
+$ pip install --index-url https://test.pypi.org/simple/ common-util-py
+$ # or local install for quick test
+$ pip install dist/common_util_py-<version>.tar.gz
 ```
 
 # command to upload to the pypi repository
 ```sh
-twine upload dist/*
-pip install common-util-py
+$ twine upload dist/*
+$ pip install common-util-py
 ```
