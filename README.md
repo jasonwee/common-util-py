@@ -54,6 +54,13 @@ $ # or local install for quick test
 $ pip install dist/common_util_py-<version>.tar.gz
 ```
 
+## tested install via pypi on the following py version
+| python        | tested installed  |
+| ------------- |:-----------------:|
+| 3.9           | yes               |
+| 3.10          | yes               |
+| 3.11          | yes               |
+
 # command to upload to the pypi repository
 ```sh
 $ twine upload dist/*
