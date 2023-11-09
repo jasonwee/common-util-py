@@ -60,7 +60,7 @@ $ pip install dist/common_util_py-<version>.tar.gz
 | 3.9           | yes               |
 | 3.10          | yes               |
 | 3.11          | yes               |
-| 3.11          |                   |
+| 3.12          |                   |
 
 # command to upload to the pypi repository
 ```sh
