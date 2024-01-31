@@ -13,3 +13,7 @@ def write_to_file(filename, content):
         file.write(content)
 
     global_lock.release()
+
+def writeListDictToFile(filename, rows):
+    with open(filename, 'w') as fout:
+        json.dump(rows, fout, indent=4, default=str, sort_keys=False)
