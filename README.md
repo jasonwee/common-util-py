@@ -4,6 +4,8 @@ common utilities in python
 ## how to install
 
 ```sh
+$ python3 -m venv py312_env
+$ source py312_env/bin/activate
 $ virtualenv --python=/usr/bin/python3 py39_env
 $ source env_py39/bin/activate
 $ pip install .
