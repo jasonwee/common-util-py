@@ -21,6 +21,7 @@ setup(
     packages=find_packages(exclude=('tests', 'docs')),
     install_requires=[
         'pymysql',
+        'matrix-nio',
     ],
     test_suite = 'nose.collector',
     classifiers=[
