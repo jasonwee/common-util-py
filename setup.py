@@ -10,7 +10,7 @@ with open('LICENSE') as f:
 
 setup(
     name='common_util_py',
-    version='0.0.19',
+    version='0.0.20',
     description='common python utility modules',
     long_description=readme,
     long_description_content_type='text/markdown',
