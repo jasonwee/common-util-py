@@ -1,1 +1,8 @@
-nose
+setuptools
+# nose require imp which imp deprecated in py3.13
+# use pytest instead
+#nose
+pytest
+SQLAlchemy
+PyMySQL
+mysql-connector

@@ -23,7 +23,9 @@ setup(
         'pymysql',
         'matrix-nio',
     ],
-    test_suite = 'nose.collector',
+    # deprecated in python3.13
+    # test_suite = 'nose.collector',
+    tests_require=["pytest"],
     classifiers=[
         'Operating System :: POSIX :: Linux',
         'Topic :: Software Development :: Libraries :: Python Modules',

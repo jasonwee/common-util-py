@@ -23,8 +23,10 @@ $ python setup.py sdist
 
 ## how to test
 ```sh
-$ python setup.py test
-$ python setup.py nosetests
+# nose is replace by pytest since python3.13
+# $ python setup.py test
+# $ python setup.py nosetests
+$ pytest
 ```
 
 read more [here](https://nose.readthedocs.io/en/latest/setuptools_integration.html)
@@ -63,6 +65,7 @@ $ pip install dist/common_util_py-<version>.tar.gz
 | 3.10          | yes               |
 | 3.11          | yes               |
 | 3.12          | yes               |
+| 3.13          | yes               |
 
 ## command to upload to the pypi repository
 ```sh
