@@ -1,7 +1,7 @@
 ## common-util-py
 common utilities in python
 
-## how to install
+## How to install
 
 ```sh
 $ python3 -m venv py312_env
@@ -15,13 +15,13 @@ $ source env_py38/bin/activate
 $ pip install .
 ```
 
-## how to build
+## How to build
 ```sh
 $ python setup.py --help-commands
 $ python setup.py sdist
 ```
 
-## how to test
+## How to test
 ```sh
 # nose is replace by pytest since python3.13
 # $ python setup.py test
@@ -36,13 +36,13 @@ https://www.codingforentrepreneurs.com/blog/pipenv-virtual-environments-for-pyth
 https://packaging.python.org/
 https://betterscientificsoftware.github.io/python-for-hpc/tutorials/python-pypi-packaging/
 
-## how to upload to pypi
+## How to upload to pypi
 ```sh
 $ python setup.py sdist
 $ pip install twine
 ```
 
-## commands to upload to the pypi test repository
+## Commands to upload to the pypi test repository
 ```sh
 $ twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 ```
@@ -51,14 +51,14 @@ or
 $ twine upload --config-file ~/.pypirc -r testpypi dist/common_util_py-0.0.1.tar.gz
 ```
 
-## test install
+## Test install
 ```sh
 $ pip install --index-url https://test.pypi.org/simple/ common-util-py
 $ # or local install for quick test
 $ pip install dist/common_util_py-<version>.tar.gz
 ```
 
-## tested install via pypi on the following py version
+## Tested install via pypi on the following py version
 | python        | tested installed  |
 | ------------- |:-----------------:|
 | 3.9           | yes               |
@@ -67,7 +67,7 @@ $ pip install dist/common_util_py-<version>.tar.gz
 | 3.12          | yes               |
 | 3.13          | yes               |
 
-## command to upload to the pypi repository
+## Command to upload to the pypi repository
 ```sh
 $ twine upload dist/*
 $ pip install common-util-py
