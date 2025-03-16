@@ -32,9 +32,9 @@ $ pytest
 read more [here](https://nose.readthedocs.io/en/latest/setuptools_integration.html)
 
 
-https://www.codingforentrepreneurs.com/blog/pipenv-virtual-environments-for-python/
-https://packaging.python.org/
-https://betterscientificsoftware.github.io/python-for-hpc/tutorials/python-pypi-packaging/
+* https://www.codingforentrepreneurs.com/blog/pipenv-virtual-environments-for-python/
+* https://packaging.python.org/
+* https://betterscientificsoftware.github.io/python-for-hpc/tutorials/python-pypi-packaging/
 
 ## How to upload to pypi
 ```sh
