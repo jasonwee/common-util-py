@@ -23,9 +23,10 @@ $ python setup.py sdist
 
 ## How to test
 ```sh
-# nose is replace by pytest since python3.13
-# $ python setup.py test
-# $ python setup.py nosetests
+$ # deprecated
+$ # python setup.py test
+$ # python setup.py nosetests
+$ # nose is replace by pytest since python3.13
 $ pytest
 ```
 
