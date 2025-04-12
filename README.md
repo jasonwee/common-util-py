@@ -37,13 +37,13 @@ read more [here](https://nose.readthedocs.io/en/latest/setuptools_integration.ht
 * https://packaging.python.org/
 * https://betterscientificsoftware.github.io/python-for-hpc/tutorials/python-pypi-packaging/
 
-## How to upload to pypi
+## How to upload to PyPI (Python Package Index)
 ```sh
 $ python setup.py sdist
 $ pip install twine
 ```
 
-## Commands to upload to the pypi test repository
+## Commands to upload to the PyPI test repository
 ```sh
 $ twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 ```
@@ -59,7 +59,7 @@ $ # or local install for quick test
 $ pip install dist/common_util_py-<version>.tar.gz
 ```
 
-## Tested install via pypi on the following py version
+## Tested installation via PyPI on the following Python versions:
 | python        | tested installed  |
 | ------------- |:-----------------:|
 | 3.9           | yes               |
@@ -67,8 +67,9 @@ $ pip install dist/common_util_py-<version>.tar.gz
 | 3.11          | yes               |
 | 3.12          | yes               |
 | 3.13          | yes               |
+| 3.14          | incoming          |
 
-## Command to upload to the pypi repository
+## Command to upload to the PyPI repository
 ```sh
 $ twine upload dist/*
 $ pip install common-util-py
