@@ -1,5 +1,5 @@
 ## common-util-py
-common utilities in python
+Common utilities in Python
 
 ## How to install
 
