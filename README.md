@@ -2,10 +2,12 @@
 Common utilities in Python
 
 ## How to install
-
+The following commands show how to install `common-util-py` using pip within a Python virtual environment. To see which versions of Python are supported by `common-util-py`, see (here)[#tested-installation-via-pypi-on-the-following-python-versions].
 ```sh
-$ python3 -m venv py312_env
-$ source py312_env/bin/activate
+$ python3 -m venv py313_env
+$ source py313_env/bin/activate
+$ pip install .
+$ # or
 $ virtualenv --python=/usr/bin/python3 py39_env
 $ source env_py39/bin/activate
 $ pip install .
