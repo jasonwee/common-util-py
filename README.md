@@ -18,9 +18,11 @@ $ pip install .
 ```
 
 ## How to build
+To create a source distribution, run the following commands:
 ```sh
-$ python setup.py --help-commands
-$ python setup.py sdist
+$ source py313_env/bin/activate
+$ python3 setup.py --help-commands
+$ python3 setup.py sdist
 ```
 
 ## How to test
