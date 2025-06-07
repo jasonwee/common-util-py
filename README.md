@@ -26,6 +26,7 @@ $ python3 setup.py sdist
 ```
 
 ## How to test
+Initially we were using `nosetests` and have since migrated to `pytest`.
 ```sh
 $ # deprecated
 $ # python setup.py test
