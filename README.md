@@ -43,12 +43,12 @@ read more [here](https://nose.readthedocs.io/en/latest/setuptools_integration.ht
 * https://betterscientificsoftware.github.io/python-for-hpc/tutorials/python-pypi-packaging/
 
 ## How to upload to PyPI (Python Package Index)
+First, build a source distribution and then install the `twine` package.
 ```sh
 $ python setup.py sdist
 $ pip install twine
 ```
-
-## Commands to upload to the PyPI test repository
+Then, use twine to upload the package to PyPI.
 ```sh
 $ twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 ```
