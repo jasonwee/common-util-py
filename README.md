@@ -74,8 +74,4 @@ $ pip install dist/common_util_py-<version>.tar.gz
 | 3.13          | yes               |
 | 3.14          | incoming          |
 
-## Command to upload to the PyPI repository
-```sh
-$ twine upload dist/*
-$ pip install common-util-py
-```
+
