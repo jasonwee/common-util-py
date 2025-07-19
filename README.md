@@ -58,9 +58,12 @@ $ twine upload --config-file ~/.pypirc -r testpypi dist/common_util_py-0.0.1.tar
 ```
 
 ## Test install
+Install from Test PyPI
 ```sh
 $ pip install --index-url https://test.pypi.org/simple/ common-util-py
-$ # or local install for quick test
+```
+Install from Local Distribution.
+```sh
 $ pip install dist/common_util_py-<version>.tar.gz
 ```
 
