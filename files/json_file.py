@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 
 def update(json_file, key, value):
