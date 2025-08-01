@@ -40,12 +40,6 @@ jobs:
       MYSQL_PORT: "3306"
 
     steps:
-    - name: Set MySQL user to use mysql_native_password
-      run: |
-        mysql -h 127.0.0.1 -u root -e "show databases;"
-        mysql -h 127.0.0.1 -u root -proot -e "SELECT User, Host FROM mysql.user;"
-      env:
-        MYSQL_PWD: root
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
