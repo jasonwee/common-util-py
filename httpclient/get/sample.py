@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from multiprocessing import Pool, Process, Queue, Pipe, Lock, Value, Array, Manager, TimeoutError
 import time
 import os
