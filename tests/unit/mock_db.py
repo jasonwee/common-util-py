@@ -2,6 +2,7 @@
 """mock database class"""
 
 from unittest import TestCase
+import os
 import sys
 import mysql.connector
 from mysql.connector import errorcode
@@ -12,14 +13,14 @@ MYSQL_USER = os.environ.get("MYSQL_USER", "testuser")
 MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD", "mysql123")
 MYSQL_DB = os.environ.get("MYSQL_DB", "testdb")
 MYSQL_HOST = os.environ.get("MYSQL_HOST", "localhost")
-MYSQL_PORT = os.environ.get("MYSQL_PORT", "3306")
+MYSQL_PORT = os.environ.get("MYSQL_PORT", 3306)
 
 
 class MockDB(TestCase):
     """
-    The MockDB class is a mock database class used for setting up and tearing down 
-    a test MySQL database environment. It creates a database and a test table with 
-    initial data for testing purposes. The class also ensures that resources are 
+    The MockDB class is a mock database class used for setting up and tearing down
+    a test MySQL database environment. It creates a database and a test table with
+    initial data for testing purposes. The class also ensures that resources are
     cleaned up after tests are executed.
 
     Methods:
@@ -36,7 +37,7 @@ class MockDB(TestCase):
 
         # drop database if it already exists
         try:
-            cursor.execute(f"DROP DATABASE {MYSQL_DB}")
+            cursor.execute(f"DROP DATABASE IF EXISTS {MYSQL_DB}")
             cursor.close()
             print("DB dropped")
         except mysql.connector.Error as err:
@@ -64,7 +65,7 @@ class MockDB(TestCase):
             else:
                 print(err.msg)
         else:
-            print("OK")
+            print("OK table created")
 
         insert_data_query = """INSERT INTO `test_table` (`id`, `text`, `int`) VALUES
                             ('1', 'test_text', 1),
@@ -74,8 +75,10 @@ class MockDB(TestCase):
             cnx.commit()
         except mysql.connector.Error as err:
             print("Data insertion to test_table failed \n" + err)
-        cursor.close()
-        cnx.close()
+        else:
+            print("mock data inserted")
+            cursor.close()
+            cnx.close()
 
         testconfig = {
             "host": MYSQL_HOST,
@@ -84,13 +87,16 @@ class MockDB(TestCase):
             "database": MYSQL_DB,
             "port": MYSQL_PORT,
         }
-
         cls.mock_db_config = get_config(testconfig)
 
     @classmethod
     def tearDownClass(cls):
         cnx = mysql.connector.connect(
-            host=MYSQL_HOST, user=MYSQL_USER, password=MYSQL_PASSWORD
+            host=MYSQL_HOST,
+            user=MYSQL_USER,
+            password=MYSQL_PASSWORD,
+            database=MYSQL_DB,
+            port=MYSQL_PORT,
         )
         cursor = cnx.cursor(dictionary=True)
 
@@ -98,7 +104,9 @@ class MockDB(TestCase):
         try:
             cursor.execute(f"DROP DATABASE {MYSQL_DB}")
             cnx.commit()
-            cursor.close()
         except mysql.connector.Error as err:
             print(f"Database {MYSQL_DB} does not exists. Dropping db failed " + err)
-        cnx.close()
+        finally:
+            cnx.close()
+
+        print("cleanup done")
