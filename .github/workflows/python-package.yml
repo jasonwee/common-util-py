@@ -28,13 +28,6 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
-    steps:
-      - name: Set MySQL user to use mysql_native_password
-        run: |
-          sudo apt-get install -y mysql-client
-          mysql -h 127.0.0.1 -u root -proot -e "ALTER USER '${{ secrets.MYSQL_DB }}'@'%' IDENTIFIED WITH mysql_native_password BY '${{ secrets.MYSQL_PASSWORD }}'; FLUSH PRIVILEGES;"
-        env:
-          MYSQL_PWD: root
     strategy:
       fail-fast: false
       matrix:
@@ -47,6 +40,12 @@ jobs:
       MYSQL_PORT: "3306"
 
     steps:
+    - name: Set MySQL user to use mysql_native_password
+      run: |
+        sudo apt-get install -y mysql-client
+        mysql -h 127.0.0.1 -u root -proot -e "ALTER USER '${{ secrets.MYSQL_DB }}'@'%' IDENTIFIED WITH mysql_native_password BY '${{ secrets.MYSQL_PASSWORD }}'; FLUSH PRIVILEGES;"
+      env:
+        MYSQL_PWD: root
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
