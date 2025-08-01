@@ -43,6 +43,7 @@ jobs:
     - name: Set MySQL user to use mysql_native_password
       run: |
         mysql -h 127.0.0.1 -u root -e "show databases;"
+        mysql -h 127.0.0.1 -u root -e "ALTER USER '${{ secrets.MYSQL_USER }}'@'%' IDENTIFIED WITH mysql_native_password BY '${{ secrets.MYSQL_PASSWORD }}'; FLUSH PRIVILEGES;"
       env:
         MYSQL_PWD: root
     - uses: actions/checkout@v4
