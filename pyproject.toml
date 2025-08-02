@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "common_util_py"
-version = "0.0.26"
+version = "0.0.27"
 description = "Common Python utility modules"
 readme = "README.md"
 license = "Apache-2.0"
