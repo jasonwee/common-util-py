@@ -1,0 +1,9 @@
+# Include important top-level files
+include README.md
+include LICENSE
+
+# Exclude test and docs directories from the source tarball
+recursive-exclude tests *
+recursive-exclude docs *
+recursive-exclude py312_env *
+recursive-exclude py39_env *
