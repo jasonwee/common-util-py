@@ -17,15 +17,9 @@ setup(
     author='Jason Wee',
     author_email='peichieh@gmail.com',
     url='https://github.com/jasonwee/common-util-py',
-    license='Apache Software License',
     packages=find_packages(exclude=('tests', 'docs')),
-    install_requires=[
-        'pymysql',
-        'matrix-nio',
-    ],
     # deprecated in python3.13
     # test_suite = 'nose.collector',
-    tests_require=["pytest"],
     classifiers=[
         'Operating System :: POSIX :: Linux',
         'Topic :: Software Development :: Libraries :: Python Modules',
