@@ -19,7 +19,6 @@ maintainers = [
 ]
 requires-python = ">=3.8"
 classifiers = [
-    "License :: OSI Approved :: Apache Software License",
     "Operating System :: POSIX :: Linux",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Programming Language :: Python :: 3",
