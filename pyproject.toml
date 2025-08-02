@@ -15,7 +15,7 @@ authors = [
     { name = "Jason Wee", email = "jason@weetech.ch" }
 ]
 maintainers = [
-    { name = "Jason Wee", email = "peichieh@gmail.com" }
+    { name = "Jason Wee", email = "peichieh@gmail.com" },
     { name = "Jason Wee", email = "jason@weetech.ch" }
 ]
 requires-python = ">=3.8"
