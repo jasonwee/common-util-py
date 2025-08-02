@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "common_util_py"
+version = "0.0.23"
+description = "Common Python utility modules"
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Jason Wee", email = "peichieh@gmail.com" }
+]
+maintainers = [
+    { name = "Jason Wee", email = "peichieh@gmail.com" }
+]
+requires-python = ">=3.8"
+classifiers = [
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["utilities", "common", "python", "sql", "weetech"]
+dependencies = [
+    "PyMySQL>=1.1.1",
+    "matrix-nio>=0.20.0",
+    "SQLAlchemy>=2.0.41",
+    "mysql-connector-python>=9.4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.4.1",
+    "twine>=6.1.0",
+    "ruff>=0.12.7",
+    "mypy>=1.17.1",
+    "build>=1.3.0",
+]
+[project.urls]
+Homepage = "https://github.com/jasonwee/common-util-py"
+Documentation = "https://jasonwee.github.io/common-util-py/"
+Source = "https://github.com/jasonwee/common-util-py"
+Tracker = "https://github.com/jasonwee/common-util-py/issues"
+
+
+[tool.setuptools.packages.find]
+exclude = ["tests", "docs"]
+#where = ["src"]
+#include = ["common_util_py*"]
+
