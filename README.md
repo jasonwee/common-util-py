@@ -6,7 +6,7 @@ The following commands show how to install `common-util-py` using pip within a P
 ```sh
 $ python3 -m venv py313_env
 $ source py313_env/bin/activate
-$ pip install .
+$ pip install .[dev]
 $ # or
 $ virtualenv --python=/usr/bin/python3 py39_env
 $ source env_py39/bin/activate
@@ -67,14 +67,22 @@ Install from Local Distribution.
 $ pip install dist/common_util_py-<version>.tar.gz
 ```
 
+## Legacy
+To generate `requirements.txt` and `requirements-dev.txt` from `pyproject.toml`, run the following command.
+```
+pip install pip-tools
+pip-compile --extra dev pyproject.toml -o requirements-dev.txt
+pip-compile pyproject.toml -o requirements.txt
+```
+
 ## Tested installation via PyPI on the following Python versions:
-| python        | tested installed  |
-| ------------- |:-----------------:|
-| 3.9           | yes               |
-| 3.10          | yes               |
-| 3.11          | yes               |
-| 3.12          | yes               |
-| 3.13          | yes               |
-| 3.14          | incoming          |
+| Python Version  | tested installed  |
+| --------------- |:-----------------:|
+| 3.9             | Yes               |
+| 3.10            | Yes               |
+| 3.11            | Yes               |
+| 3.12            | Yes               |
+| 3.13            | Yes               |
+| 3.14            | Upcoming          |
 
 
