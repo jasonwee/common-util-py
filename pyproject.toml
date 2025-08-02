@@ -7,8 +7,7 @@ name = "common_util_py"
 version = "0.0.25"
 description = "Common Python utility modules"
 readme = "README.md"
-
-license = { text = "Apache-2.0" }
+license = "Apache-2.0"
 license-files = ["LICENSE"]
 authors = [
     { name = "Jason Wee", email = "peichieh@gmail.com" },
