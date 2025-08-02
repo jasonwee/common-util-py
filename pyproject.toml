@@ -10,12 +10,12 @@ readme = "README.md"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
 authors = [
-    { name = "Jason Wee", email = "peichieh@gmail.com" },
-    { name = "Jason Wee", email = "jason@weetech.ch" }
+    { name = "Jason Wee", email = "jason@weetech.ch" },
+    { name = "Jason Wee", email = "peichieh@gmail.com" }
 ]
 maintainers = [
-    { name = "Jason Wee", email = "peichieh@gmail.com" },
-    { name = "Jason Wee", email = "jason@weetech.ch" }
+    { name = "Jason Wee", email = "jason@weetech.ch" },
+    { name = "Jason Wee", email = "peichieh@gmail.com" }
 ]
 requires-python = ">=3.8"
 classifiers = [
