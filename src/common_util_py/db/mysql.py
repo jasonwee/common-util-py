@@ -43,7 +43,6 @@ class Mysql:
             **kwargs,
         }
         self.conn: MySQLConnection | None = None
-        self.connect()
 
     def connect(self) -> None:
         """Establish database connection."""
@@ -63,8 +62,16 @@ class Mysql:
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
         self.close()
 
+    def _ensure_connection(self) -> None:
+        """Ensure the database connection is active."""
+        if self.conn is None:
+            self.connect()
+        elif not self.conn.is_connected():
+            self.connect()
+
     def create(self, statement: str, vals: tuple = ()) -> int:
         """create database or table"""
+        self._ensure_connection()
         cursor = self.conn.cursor()
         if vals:
             cursor.execute(statement, vals)
@@ -121,6 +128,7 @@ class Mysql:
 
         # Process in batches to avoid very large queries
         total_affected = 0
+        self._ensure_connection()
         cursor = self.conn.cursor()
 
         try:
@@ -140,6 +148,7 @@ class Mysql:
 
     def read(self, statement: str, vals: tuple = ()) -> list[dict]:
         """read rows from table"""
+        self._ensure_connection()
         cursor = self.conn.cursor()
         try:
             if vals:
@@ -154,6 +163,7 @@ class Mysql:
 
     def update(self, statement: str, vals: tuple = ()) -> int:
         """update rows in table"""
+        self._ensure_connection()
         cursor = self.conn.cursor()
         if vals:
             cursor.execute(statement, vals)
@@ -202,6 +212,7 @@ class Mysql:
 
         # Process in batches to avoid very large queries
         total_affected = 0
+        self._ensure_connection()
         cursor = self.conn.cursor()
         try:
             for i in range(0, len(data), batch_size):
@@ -222,6 +233,7 @@ class Mysql:
 
     def delete(self, statement: str, vals: tuple = ()) -> int:
         """Delete rows from table"""
+        self._ensure_connection()
         cursor = self.conn.cursor()
         if vals:
             cursor.execute(statement, vals)
@@ -233,8 +245,7 @@ class Mysql:
     @contextmanager
     def cursor(self, dictionary: bool = False) -> MySQLCursor:
         """Get a database cursor with context manager."""
-        if not self.conn or not self.conn.is_connected():
-            self.connect()
+        self._ensure_connection()
 
         cursor = self.conn.cursor(dictionary=dictionary)
         try:
@@ -253,6 +264,7 @@ class Mysql:
 
         try:
             # Start transaction
+            self._ensure_connection()
             self.conn.start_transaction()
 
             # Execute the code inside the with block
