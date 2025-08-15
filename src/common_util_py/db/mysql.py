@@ -18,17 +18,23 @@ mysql database class
 """
 
 from contextlib import contextmanager
+from collections.abc import Iterator
 import mysql.connector
 from mysql.connector import Error, MySQLConnection
 from mysql.connector.cursor import MySQLCursor
+
+
+class TransactionError(Exception):
+    """Custom exception for transaction-related errors."""
 
 
 class Mysql:
     """A simplified MySQL database wrapper for CRUD operations.
 
     Example:
-        with Mysql(host='localhost', user='user', password='pass', database='mydb') as db:
-            db.create("CREATE TABLE IF NOT EXISTS test (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255))")
+    with Mysql(host='localhost', user='user', password='pass', database='mydb') as db:
+        db.create("CREATE TABLE IF NOT EXISTS test"
+                  "(id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255))")
     """
 
     def __init__(self, host: str, username: str, password: str, **kwargs):
@@ -61,15 +67,7 @@ class Mysql:
         self.close()
 
     def create(self, statement: str, vals: tuple = ()) -> int:
-        """
-        create database or table
-        # create database mydb
-        # show databases
-        # CREATE TABLE customers (name VARCHAR(255), address VARCHAR(255))
-        #"INSERT INTO customers (name, address) VALUES (%s, %s)" | ("John", "Highway 21")
-        # "DROP TABLE customers"
-        # "DROP TABLE IF EXISTS customers"
-        """
+        """create database or table"""
         cursor = self.conn.cursor()
         if vals:
             cursor.execute(statement, vals)
@@ -79,32 +77,21 @@ class Mysql:
         return cursor.rowcount
 
     def read(self, statement: str, vals: tuple = ()) -> list[dict]:
-        """
-        read rows from table
-        SELECT * FROM customers
-        SELECT name, address FROM customers
-        SELECT * FROM customers WHERE address ='Park Lane 38'
-        SELECT * FROM customers WHERE address = %s | ("Yellow Garden 2", )
-        SELECT * FROM customers ORDER BY name
-        SELECT * FROM customers ORDER BY name DESC
-        SELECT * FROM customers LIMIT 5
-        SELECT * FROM customers LIMIT 5 OFFSET 2
-        "SELECT users.name AS user, products.name AS favorite FROM users INNER JOIN products ON users.fav = products.id
-        """
+        """read rows from table"""
         cursor = self.conn.cursor()
-        if vals:
-            cursor.execute(statement, vals)
-        else:
-            cursor.execute(statement)
-        results = cursor.fetchall()
-        return results
+        try:
+            if vals:
+                cursor.execute(statement, vals)
+            else:
+                cursor.execute(statement)
+            results = cursor.fetchall()
+            return results
+        except Error as e:
+            # maybe here can raise a custom error, example DatabaseError
+            raise Exception(f"Failed to read from MySQL: {e}") from e
 
     def update(self, statement: str, vals: tuple = ()) -> int:
-        """
-        update rows in table
-        # "UPDATE customers SET address = 'Canyon 123' WHERE address = 'Valley 345'"
-        # "UPDATE customers SET address = %s WHERE address = %s" | ("Valley 345", "Canyon 123")
-        """
+        """update rows in table"""
         cursor = self.conn.cursor()
         if vals:
             cursor.execute(statement, vals)
@@ -114,11 +101,7 @@ class Mysql:
         return cursor.rowcount
 
     def delete(self, statement: str, vals: tuple = ()) -> int:
-        """
-        Delete rows from table
-        # DELETE FROM customers WHERE address = 'Mountain 21'
-        # DELETE FROM customers WHERE address = %s | ("Yellow Garden 2", )
-        """
+        """Delete rows from table"""
         cursor = self.conn.cursor()
         if vals:
             cursor.execute(statement, vals)
@@ -138,3 +121,46 @@ class Mysql:
             yield cursor
         finally:
             cursor.close()
+
+    @contextmanager
+    def transaction(
+        self, rollback_on: type[Exception] | tuple[type[Exception], ...] | None = None
+    ) -> Iterator[None]:
+        """context manager for handling database transactions."""
+        if rollback_on is None:
+            # Default: rollback on any exception
+            rollback_on = (Exception,)
+
+        try:
+            # Start transaction
+            self.conn.start_transaction()
+
+            # Execute the code inside the with block
+            yield
+
+            # If we get here, commit the transaction
+            self.conn.commit()
+
+        except rollback_on:
+            # Rollback on specified exceptions
+            try:
+                self.conn.rollback()
+            except Error as rollback_err:
+                # If rollback fails, raise a TransactionError
+                raise TransactionError(
+                    "Failed to rollback transaction"
+                ) from rollback_err
+            # Re-raise the original exception
+            raise
+
+        except Exception:
+            # For any other exception, rollback if not in autocommit mode
+            if not self.conn.autocommit:
+                try:
+                    self.conn.rollback()
+                except Error as rollback_err:
+                    raise TransactionError(
+                        "Failed to rollback transaction"
+                    ) from rollback_err
+            # Re-raise the original exception
+            raise
