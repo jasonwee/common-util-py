@@ -22,10 +22,7 @@ from collections.abc import Iterator
 import mysql.connector
 from mysql.connector import Error, MySQLConnection
 from mysql.connector.cursor import MySQLCursor
-
-
-class TransactionError(Exception):
-    """Custom exception for transaction-related errors."""
+from .database import TransactionError, sanitize_identifier
 
 
 class Mysql:
@@ -76,6 +73,71 @@ class Mysql:
             cursor.execute(statement)
         return cursor.rowcount
 
+    def batch_insert(
+        self,
+        table: str,
+        columns: list[str],
+        data: list[tuple],
+        batch_size: int = 1000,
+        on_duplicate_key_update: bool = False,
+        update_columns: list[str] | None = None,
+    ) -> int:
+        """Perform a batch insert operation."""
+        if not data:
+            return 0
+
+        if not columns:
+            raise ValueError("columns cannot be empty")
+
+        # Sanitize all identifiers
+        safe_table = sanitize_identifier(table)
+        safe_columns = [sanitize_identifier(col) for col in columns]
+
+        # Verify no columns were completely removed by sanitization
+        if not safe_table or not all(safe_columns):
+            raise ValueError("Invalid table or column names provided")
+
+        # Build the column list part of the query with backticks
+        columns_str = ", ".join(f"`{col}`" for col in safe_columns)
+        placeholders = ", ".join(["%s"] * len(safe_columns))
+
+        # Build the basic INSERT query with backticks
+        query = f"INSERT INTO `{safe_table}` ({columns_str}) VALUES ({placeholders})"
+
+        # Add ON DUPLICATE KEY UPDATE if needed
+        if on_duplicate_key_update:
+            if update_columns is None:
+                update_columns = safe_columns
+            else:
+                # Sanitize update_columns if provided
+                update_columns = [sanitize_identifier(col) for col in update_columns]
+                if not all(update_columns):
+                    raise ValueError("Invalid update_columns provided")
+
+            update_clause = ", ".join(
+                f"`{col}` = VALUES(`{col}`)" for col in update_columns
+            )
+            query += f" ON DUPLICATE KEY UPDATE {update_clause}"
+
+        # Process in batches to avoid very large queries
+        total_affected = 0
+        cursor = self.conn.cursor()
+
+        try:
+            for i in range(0, len(data), batch_size):
+                batch = data[i : i + batch_size]
+                cursor.executemany(query, batch)
+                total_affected += cursor.rowcount
+
+            self.conn.commit()
+            return total_affected
+
+        except Error as e:
+            self.conn.rollback()
+            raise Exception(f"Batch insert failed: {e}") from e
+        finally:
+            cursor.close()
+
     def read(self, statement: str, vals: tuple = ()) -> list[dict]:
         """read rows from table"""
         cursor = self.conn.cursor()
@@ -99,6 +161,64 @@ class Mysql:
             cursor.execute(statement)
         self.conn.commit()
         return cursor.rowcount
+
+    def batch_update(
+        self,
+        table: str,
+        update_columns: list[str],
+        where_columns: list[str],
+        data: list[tuple],
+        batch_size: int = 1000,
+    ) -> int:
+        """Perform a batch update operation."""
+        if not data:
+            return 0
+
+        # Validate input
+        if not update_columns or not where_columns:
+            raise ValueError("update_columns and where_columns cannot be empty")
+
+        # Sanitize all identifiers
+        safe_table = sanitize_identifier(table)
+        safe_update_columns = [sanitize_identifier(col) for col in update_columns]
+        safe_where_columns = [sanitize_identifier(col) for col in where_columns]
+
+        # Verify no columns were completely removed by sanitization
+        if (
+            not safe_table
+            or not all(safe_update_columns)
+            or not all(safe_where_columns)
+        ):
+            raise ValueError("Invalid table or column names provided")
+
+        # Build the SET part of the query
+        set_clause = ", ".join(f"{col} = %s" for col in safe_update_columns)
+
+        # Build the WHERE part of the query
+        where_clause = " AND ".join(f"{col} = %s" for col in safe_where_columns)
+
+        # Build the full query
+        query = f"UPDATE {safe_table} SET {set_clause} WHERE {where_clause}"
+
+        # Process in batches to avoid very large queries
+        total_affected = 0
+        cursor = self.conn.cursor()
+        try:
+            for i in range(0, len(data), batch_size):
+                batch = data[i : i + batch_size]
+                # Convert each row's data into the correct parameter order
+                # (update_values first, then where_values)
+                params = list(batch)
+                cursor.executemany(query, params)
+                total_affected += cursor.rowcount
+
+            self.conn.commit()
+            return total_affected
+        except Error as e:
+            self.conn.rollback()
+            raise Exception(f"Batch update failed: {e}") from e
+        finally:
+            cursor.close()
 
     def delete(self, statement: str, vals: tuple = ()) -> int:
         """Delete rows from table"""
