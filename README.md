@@ -17,6 +17,9 @@ $ source env_py38/bin/activate
 $ pip install .
 ```
 
+## Example
+See the example [here](src/examples) to learn on how to use `common-util-py`.
+
 ## How to build
 To create a source distribution, run the following commands:
 ```sh
