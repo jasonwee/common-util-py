@@ -40,6 +40,7 @@ Tracker = "https://github.com/jasonwee/common-util-py/issues"
 [project.optional-dependencies]
 dev = [
     "pytest>=8.4.1",
+    "pytest-mock>=3.14.1",
     "twine>=6.1.0",
     "ruff>=0.12.7",
     "mypy>=1.17.1",
