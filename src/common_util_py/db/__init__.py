@@ -15,6 +15,7 @@
 # limitations under the License.
 """db module"""
 
+from .database import TransactionError, sanitize_identifier
 from .mysql import Mysql as mysql
 from .sql import (
     create_table,
@@ -30,6 +31,8 @@ from .sql import (
 )
 
 __all__ = [
+    "TransactionError",
+    "sanitize_identifier",
     "mysql",
     "create_table",
     "drop_table",
