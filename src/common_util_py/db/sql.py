@@ -1,6 +1,9 @@
 import pymysql as MySQLdb
 
-from typing import Dict, List
+from dataclasses import dataclass
+from typing import Dict, List, Literal, Any
+
+
 
 # create table
 def create_table(mysql_con: MySQLdb, sql: str) -> None:
@@ -37,6 +40,60 @@ def insert_statement(mysql_con: MySQLdb, sql: str) -> None:
 def insert_rows(mysql_con: MySQLdb, table_name: str, rows: List[Dict]) -> None:
     for row in rows:
         insert(mysql_con, table_name, row)
+
+@dataclass
+class Condition:
+    op: Literal['AND', 'OR']
+    field: str
+    cmp: Literal['=', '!=', '>', '<', '>=', '<=', 'LIKE', 'IN', 'NOT IN', 'IS NULL', 'IS NOT NULL']
+    value: Any
+
+def build_where_clause(conditions: List[Condition]) -> tuple[str, list]:
+    if not conditions:
+        return "", []
+
+    params = []
+    conditions_sql = []
+
+    for cond in conditions:
+        if cond['cmp'].upper() in ('IS NULL', 'IS NOT NULL'):
+            conditions_sql.append(f"{cond['field']} {cond['cmp']}")
+        else:
+            conditions_sql.append(f"{cond['field']} {cond['cmp']} %s")
+            params.append(cond['value'])
+
+    # The first condition's operator is ignored (usually starts with WHERE)
+    where_clause = " WHERE " + " ".join(
+        f"{cond['op']} {conditions_sql[i]}"
+        for i, cond in enumerate(conditions[1:], 1)
+    )
+    where_clause = where_clause.replace("WHERE AND", "WHERE").replace("WHERE OR", "WHERE")
+
+    return where_clause, params
+
+def select(
+    mysql_con: MySQLdb,
+    table_name: str,
+    condition_groups: List[Condition] = None,
+    field_names: List[str] = None
+) -> List[Dict]:
+    """
+    select * from table_name where foo = 'bar' or blah = "baz";
+    """
+    if field_names is None:
+        field_names = ['*']
+    if condition_groups is None:
+        condition_groups = []
+
+    fields = ', '.join(field_names)
+
+    where_clause, params = build_where_clause(condition_groups)
+    query = f"SELECT {fields} FROM {table_name}{where_clause}"
+
+    with mysql_con.cursor(MySQLdb.cursors.DictCursor) as cursor:
+        cursor.execute(query, params)
+        return cursor.fetchall()
+
 
 def select_statement(mysql_con: MySQLdb, sql: str) -> List[Dict]:
     cur = mysql_con.cursor(MySQLdb.cursors.DictCursor)
