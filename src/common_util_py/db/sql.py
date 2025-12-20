@@ -1,8 +1,9 @@
 import pymysql as MySQLdb
+from pymysql.cursors import DictCursor
 
 from dataclasses import dataclass
-from typing import Literal, Any
-
+from typing import Literal, Any, Optional, Union
+from contextlib import contextmanager
 
 
 # create table
@@ -47,6 +48,22 @@ class Condition:
     field: str
     cmp: Literal['=', '!=', '>', '<', '>=', '<=', 'LIKE', 'IN', 'NOT IN', 'IS NULL', 'IS NOT NULL']
     value: Any
+
+class DatabaseError(Exception):
+    """Custom exception for database operations"""
+    pass
+
+@contextmanager
+def get_cursor(connection: MySQLdb.Connection, dict_cursor: bool = False):
+    """Context manager for database cursor with proper cleanup"""
+    cursor = connection.cursor(DictCursor if dict_cursor else None)
+    try:
+        yield cursor
+    except MySQLdb.Error as e:
+        connection.rollback()
+        raise DatabaseError(f"Database error occurred: {e}") from e
+    finally:
+        cursor.close()
 
 def build_where_clause(conditions: list[Condition]) -> tuple[str, list[str]]:
     if not conditions:
@@ -104,15 +121,63 @@ def delete(mysql_con: MySQLdb.Connection, sql: str) -> None:
     cur = mysql_con.cursor()
     cur.execute(sql)
 
-def update(mysql_con: MySQLdb.Connection, table_name: str, data: dict[str, str], condition: str) -> int:
-    keys = data.keys()
-    values = data.values()
-    sql_values_placeholder = ', '.join([x+' = %s' for x in keys])
-    #sql_final = 'UPDATE {0} SET '.format(table_name, ', '.join(keys), sql_values_placeholder)
-    sql_final = 'UPDATE {0} SET {1} WHERE {2}'.format(table_name, sql_values_placeholder, condition)
-    cur = mysql_con.cursor()
-    cur.execute(sql_final, list(values))
-    return cur.rowcount
+def update(
+    mysql_con: MySQLdb.Connection,
+    table_name: str,
+    data: dict[str, str],
+    conditions: Optional[Union[Condition, list[Condition]]] = None
+) -> int:
+    """
+    Update records in the specified table.
+
+    Args:
+        mysql_con: Database connection
+        table_name: Name of the table to update
+        data: Dictionary of column names and new values
+        conditions: Single condition or list of conditions for the WHERE clause
+
+    Returns:
+        int: Number of affected rows
+
+    Raises:
+        DatabaseError: If any database operation fails
+    """
+    if not data:
+        raise ValueError("No data provided for update")
+    if not table_name:
+        raise ValueError("Invalid table name")
+
+    # Convert single condition to list for uniform handling
+    if conditions and not isinstance(conditions, list):
+        conditions = [conditions]
+
+    # Build SET clause
+    set_clause = ', '.join([f"{field} = %s" for field in data.keys()])
+    params = list(data.values())
+
+    # Build WHERE clause if conditions are provided
+    where_clause = ""
+    if conditions:
+        where_parts: list[str] = []
+        for i, cond in enumerate(conditions):
+            if i == 0:
+                where_parts.append(f"{cond.field} {cond.cmp} %s")
+            else:
+                where_parts.append(f"{cond.op} {cond.field} {cond.cmp} %s")
+            params.append(cond.value)
+
+        where_clause = " WHERE " + " ".join(where_parts)
+
+    query = f"UPDATE {MySQLdb.converters.escape_string(table_name)} SET {set_clause}{where_clause}"
+
+    try:
+        with get_cursor(mysql_con) as cursor:
+            cursor.execute(query, params)
+            mysql_con.commit()
+            return cursor.rowcount
+    except MySQLdb.Error as e:
+        mysql_con.rollback()
+        raise DatabaseError(f"Failed to update records: {e}") from e
 
 def update_table(mysql_con: MySQLdb.Connection, sql: str) -> None:
     cur = mysql_con.cursor()
