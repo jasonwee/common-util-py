@@ -179,10 +179,33 @@ def update(
         mysql_con.rollback()
         raise DatabaseError(f"Failed to update records: {e}") from e
 
-def update_table(mysql_con: MySQLdb.Connection, sql: str) -> None:
-    cur = mysql_con.cursor()
-    cur.execute(sql)
+def update_table(mysql_con: MySQLdb.Connection, sql: str, params: Optional[Union[tuple, dict]] = None) -> int:
+    """
+    Execute an UPDATE SQL query and return the number of affected rows.
 
-def generic(mysql_con: MySQLdb.Connection, sql: str) -> None:
+    Args:
+        mysql_con: MySQL database connection
+        sql: SQL query string
+        params: Parameters for the SQL query (prevents SQL injection)
+
+    Returns:
+        int: Number of rows affected by the query
+
+    Raises:
+        DatabaseError: If the query execution fails
+    """
+    try:
+        with get_cursor(mysql_con) as cursor:
+            cursor.execute(sql, params or ())
+            mysql_con.commit()
+            return cursor.rowcount
+    except MySQLdb.Error as e:
+        mysql_con.rollback()
+        raise DatabaseError(f"Failed to execute update query: {e}") from e
+
+def generic(mysql_con: MySQLdb.Connection, sql: str) -> Any | None:
+    """
+    Try not to use it or deprecate this
+    """
     cur = mysql_con.cursor()
     cur.execute(sql)
