@@ -8,9 +8,9 @@ Only work for linux since it use singal.SIGALRM
 import logging
 import os
 import signal
-import types
 import subprocess
 import sys
+import types
 
 
 logging.basicConfig(
@@ -31,14 +31,14 @@ class TimeoutException(Exception):
     """Time out exception"""
 
 
-def timeout_handler(signum: int, frame: types.FrameTypes | None) -> None:
+def timeout_handler(signum: int, frame: types.FrameType | None) -> None:
     """Timeout handler"""
     raise TimeoutException(
         f"No activity from app for {TIMEOUT_NO_ACTIVITY_SECONDS} seconds"
     )
 
 
-def execute(cmd: list[str]):
+def execute(cmd: list[str]) -> None:
     """
     Execute a command, restarting on CUDA errors or inactivity.
     Args:
@@ -75,7 +75,7 @@ def execute(cmd: list[str]):
         try:
             proc.wait(timeout=15)
         except subprocess.TimeoutExpired:
-            logging.error("app didn't shutdown within 5 seconds")
+            logging.error("app didn't shutdown within 15 seconds")
             proc.kill()
 
 
