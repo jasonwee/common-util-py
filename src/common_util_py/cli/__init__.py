@@ -7,12 +7,12 @@ import subprocess
 from . import timeout
 
 
-def run(command):
+def run(command: list[str]) -> tuple[bytes, bytes | None]:
     """
     Run a command and return the output and error.
     """
     # bashCommand = "cwm --rdf test.rdf --ntriples > test.nt"
-    with subprocess.Popen(command.split(), stdout=subprocess.PIPE) as process:
+    with subprocess.Popen(command, stdout=subprocess.PIPE) as process:
         output, error = process.communicate()
     return (output, error)
 
