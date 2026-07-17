@@ -15,13 +15,16 @@ def update(json_file: str, key: str, value: Any) -> None:
     :returns: None
 
     """
-    with open(json_file, "r", encoding="utf-8") as f:
-        data = json.load(f)
-
-    with open(json_file, "w", encoding="utf-8") as f:
-        data[key] = value
-        json.dump(data, f, indent=3, sort_keys=True)
-        f.write("\n")
+    try:
+        with open(json_file, "r+", encoding="utf-8") as f:
+            data = json.load(f)
+            data[key] = value
+            f.seek(0)
+            f.truncate()
+            json.dump(data, f, indent=3, sort_keys=True)
+            f.write("\n")
+    except FileNotFoundError:
+        raise FileNotFoundError(f"JSON file not found: {json_file}")
 
 
 def get_all(json_file: str) -> str:
