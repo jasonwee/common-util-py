@@ -33,11 +33,15 @@ def get_all(json_file: str) -> str:
 
     :param json_file: the json file where the key and value present
     :returns: the content of the json file
-
     """
-    with open(json_file, "r", encoding="utf-8") as f:
-        data = json.dumps(json.load(f), indent=4)
-    return data
+    try:
+        with open(json_file, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return json.dumps(data, indent=3)
+    except FileNotFoundError:
+        raise FileNotFoundError(f"JSON file not found: {json_file}")
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Invalid JSON in file {json_file}: {e}") from e
 
 
 def get_value(json_file: str, key: str) -> Any:
