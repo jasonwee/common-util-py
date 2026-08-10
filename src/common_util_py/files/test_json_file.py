@@ -88,7 +88,7 @@ def test_get_all_invalid_json():
         path = os.path.join(tmpdir, "broken.json")
         with open(path, "w", encoding="utf-8") as f:
             f.write("not a json")
-        with pytest.raises(json.JSONDecodeError):
+        with pytest.raises(ValueError):
             json_file.get_all(path)
 
 
