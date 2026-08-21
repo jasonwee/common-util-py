@@ -82,7 +82,10 @@ def test_update_invalid_json():
 
 def test_get_all_invalid_json():
     """
-    test get all invalid json
+    Test that get_all raises ValueError when the JSON file contains invalid JSON.
+
+    This test creates a file with invalid JSON content and verifies that
+    get_all() raises a ValueError instead of attempting to parse the malformed data.
     """
     with tempfile.TemporaryDirectory() as tmpdir:
         path = os.path.join(tmpdir, "broken.json")
