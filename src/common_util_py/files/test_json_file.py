@@ -97,7 +97,11 @@ def test_get_all_invalid_json():
 
 def test_get_value_invalid_json():
     """
-    test get value invalid json
+    Test that get_value raises JSONDecodeError when given a file with invalid JSON.
+
+    This test creates a file with invalid JSON content and verifies that
+    get_value() raises a JSONDecodeError instead of attempting to parse
+    the malformed data.
     """
     with tempfile.TemporaryDirectory() as tmpdir:
         path = os.path.join(tmpdir, "broken.json")
