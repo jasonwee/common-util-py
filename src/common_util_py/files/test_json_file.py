@@ -12,7 +12,10 @@ from files import json_file
 
 def test_update_and_get_value():
     """
-    test update and get value
+    Test update() and get_value() integration.
+
+    Verifies that update() can add and modify key-value pairs,
+    and get_value() correctly retrieves the updated values.
     """
     with tempfile.TemporaryDirectory() as tmpdir:
         path = os.path.join(tmpdir, "data.json")
