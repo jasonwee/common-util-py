@@ -31,7 +31,11 @@ def test_update_and_get_value():
 
 def test_get_value_missing_key():
     """
-    test get value missing key
+    Test that get_value returns 0 when the specified key is not found in the JSON file.
+
+    This test creates a JSON file with a known key-value pair and verifies that
+    get_value() returns 0 when attempting to retrieve a non-existent key,
+    demonstrating the default behavior for missing keys.
     """
     with tempfile.TemporaryDirectory() as tmpdir:
         path = os.path.join(tmpdir, "data.json")
@@ -42,7 +46,11 @@ def test_get_value_missing_key():
 
 def test_get_all():
     """
-    test get all
+    Test that get_all returns the complete JSON content as a formatted string.
+
+    This test creates a JSON file with multiple key-value pairs and verifies that
+    get_all() returns a JSON string containing all the data, properly formatted
+    with indentation as specified in the implementation.
     """
     with tempfile.TemporaryDirectory() as tmpdir:
         path = os.path.join(tmpdir, "data.json")
@@ -57,7 +65,11 @@ def test_get_all():
 
 def test_create_json_file():
     """
-    test create json file
+    Test that create_json_file copies the template content to the target file.
+
+    This test creates a template JSON file with sample data and verifies that
+    create_json_file() successfully creates a new file with identical content,
+    ensuring the template copying functionality works correctly.
     """
     with tempfile.TemporaryDirectory() as tmpdir:
         template = os.path.join(tmpdir, "template.json")
