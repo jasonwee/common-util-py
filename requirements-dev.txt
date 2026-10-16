@@ -39,7 +39,7 @@ frozenlist==1.7.0
     #   aiosignal
 h11==0.16.0
     # via matrix-nio
-h2==4.3.0
+h2==4.4.1
     # via matrix-nio
 hpack==4.1.0
     # via h2
