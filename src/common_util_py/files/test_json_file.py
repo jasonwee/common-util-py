@@ -85,7 +85,11 @@ def test_create_json_file():
 
 def test_update_invalid_json():
     """
-    test update invalid json
+    Test that update raises JSONDecodeError when the JSON file contains invalid JSON.
+
+    This test creates a file with invalid JSON content and verifies that
+    update() raises a JSONDecodeError instead of attempting to modify
+    the malformed data.
     """
     with tempfile.TemporaryDirectory() as tmpdir:
         path = os.path.join(tmpdir, "broken.json")
@@ -128,7 +132,11 @@ def test_get_value_invalid_json():
 
 def test_create_json_file_invalid_template():
     """
-    test create json file invalid template
+    Test that create_json_file raises JSONDecodeError when the template contains invalid JSON.
+
+    This test creates a template file with invalid JSON content and verifies that
+    create_json_file() raises a JSONDecodeError instead of attempting to create
+    a file from the malformed template.
     """
     with tempfile.TemporaryDirectory() as tmpdir:
         template = os.path.join(tmpdir, "broken.json")
