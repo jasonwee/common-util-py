@@ -10,7 +10,13 @@ from files import write_to_file, write_list_dict_to_file
 
 
 def test_write_to_file_appends():
-    """Test that write_to_file appends content to a file."""
+    """
+    Test that write_to_file appends content to a file.
+
+    This test verifies that calling write_to_file multiple times
+    results in content being appended rather than overwritten,
+    as the implementation uses append mode ("a+").
+    """
     with tempfile.TemporaryDirectory() as tmpdir:
         path = os.path.join(tmpdir, "testfile.txt")
         write_to_file(path, "hello\n")
