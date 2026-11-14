@@ -4,8 +4,8 @@ Common utilities in Python
 ## How to install
 The following commands show how to install `common-util-py` using pip within a Python virtual environment. To see which versions of Python are supported by `common-util-py`, see [here](#tested-installation-via-pypi-on-the-following-python-versions).
 ```sh
-$ python3 -m venv py314_env
-$ source py314_env/bin/activate
+$ python3 -m venv py315_env
+$ source py315_env/bin/activate
 $ pip install .[dev]
 $ # or
 $ virtualenv --python=/usr/bin/python3 py39_env
@@ -23,7 +23,7 @@ See the example [here](src/examples) to learn on how to use `common-util-py`.
 ## How to build
 To create a source distribution, run the following commands:
 ```sh
-$ source py314_env/bin/activate
+$ source py315_env/bin/activate
 $ python3 setup.py --help-commands
 $ python3 setup.py sdist
 ```
@@ -87,6 +87,7 @@ pip-compile pyproject.toml -o requirements.txt
 | 3.12            | Yes               |
 | 3.13            | Yes               |
 | 3.14            | Yes               |
+| 3.15            | Yes               |
 | 3.15            | Upcoming          |
 
 
