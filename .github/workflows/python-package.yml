@@ -47,8 +47,6 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        # remove pip pin version after december 2026
-        python -m pip install "pip==26.1.2"
         python -m pip install flake8 pytest pip-tools
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         pip-compile pyproject.toml --extra=dev --output-file=requirements-dev.txt

@@ -88,6 +88,6 @@ pip-compile pyproject.toml -o requirements.txt
 | 3.13            | Yes               |
 | 3.14            | Yes               |
 | 3.15            | Yes               |
-| 3.15            | Upcoming          |
+| 3.16            | Upcoming          |
 
 
